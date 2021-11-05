@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "102296869483",
+    "project_id": "greenactions-6842a",
+    "storage_bucket": "greenactions-6842a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102296869483:android:f349bbeee12444e906af2e",
+        "android_client_info": {
+          "package_name": "com.example.greenaction"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102296869483-iu0h04p731b5lcq0en0d9haut09u4auk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.greenaction",
+            "certificate_hash": "cfa5ad427b5ed6f97d977b0e6bba9b2ba59dc326"
+          }
+        },
+        {
+          "client_id": "102296869483-f9rar1dpe9788kn9m47621cg994fuoh5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ6hFiuuR4mYLEAx6XmvMANjOXFt5_DK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102296869483-f9rar1dpe9788kn9m47621cg994fuoh5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
