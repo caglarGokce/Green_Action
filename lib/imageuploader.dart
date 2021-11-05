@@ -102,4 +102,19 @@ class ImageUploader {
     Image image = Image.memory(uint8list);
     return image;
   }
+
+  Future getCommentPic(uid) async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    File downloadToFile = File('${appDocDir.path}/$uid.jpg');
+    try {
+      Reference firebaseStorageRef =
+          FirebaseStorage.instance.ref(CustomAuthentication().getUID());
+      DownloadTask downloadTask =
+          firebaseStorageRef.writeToFile(downloadToFile);
+      await downloadTask;
+      return downloadToFile;
+    } catch (e) {
+      return null;
+    }
+  }
 }

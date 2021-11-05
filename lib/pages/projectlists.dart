@@ -171,7 +171,8 @@ class _ProjeListsState extends State<ProjeLists> {
                                               return ListTile(
                                                   title: Text(questionlist[no]
                                                       .question),
-                                                  leading: Icon(Icons.person),
+                                                  leading: Icon(
+                                                      Icons.question_answer),
                                                   subtitle: Text(
                                                       questionlist[no]
                                                           .answers));
@@ -194,9 +195,8 @@ class _ProjeListsState extends State<ProjeLists> {
                                     Text('View Project to make a comment'),
                                   if (projelistesi[index].comments != null &&
                                       projelistesi[index].commentsOn == true)
-//TODO put comments in an expansiontile
+
 //TODO put user image to leading
-//TODO read yaparken question fieldlere bak yoksa yaz
                                     ExpansionTile(
                                       title: Text('Comments'),
                                       trailing: Icon(Icons.arrow_circle_down),
@@ -215,6 +215,112 @@ class _ProjeListsState extends State<ProjeLists> {
                                                               .comments[no])[
                                                       'Username']),
                                                   leading: Icon(Icons.person),
+                                                  //PAramiz olunca
+                                                  /*leading: FutureBuilder(
+                                                    //redundant code, seperate it lately
+                                                    future: ImageUploader()
+                                                        .getCommentPic(jsonDecode(
+                                                            projelistesi[index]
+                                                                    .comments[
+                                                                no])['madeBy']),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot
+                                                              .connectionState !=
+                                                          ConnectionState
+                                                              .done) {
+                                                        return Container(
+                                                          height: 50.0,
+                                                          width: 50.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image: AssetImage(
+                                                                  'lib/assets/images/cat.png'),
+                                                              fit: BoxFit
+                                                                  .fitHeight,
+                                                            ),
+                                                            shape: BoxShape
+                                                                .rectangle,
+                                                          ),
+                                                        );
+                                                      }
+                                                      if (snapshot.hasError) {
+                                                        return Container(
+                                                          height: 50.0,
+                                                          width: 50.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image: AssetImage(
+                                                                  'lib/assets/images/cat.png'),
+                                                              fit: BoxFit
+                                                                  .fitHeight,
+                                                            ),
+                                                            shape: BoxShape
+                                                                .rectangle,
+                                                          ),
+                                                        );
+                                                      }
+                                                      if (snapshot.hasData) {
+                                                        if (snapshot.data ==
+                                                            null) {
+                                                          return Container(
+                                                            height: 50.0,
+                                                            width: 50.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image: AssetImage(
+                                                                    'lib/assets/images/cat.png'),
+                                                                fit: BoxFit
+                                                                    .fitHeight,
+                                                              ),
+                                                              shape: BoxShape
+                                                                  .rectangle,
+                                                            ),
+                                                          );
+                                                        } else {
+                                                          return Container(
+                                                            height: 50.0,
+                                                            width: 50.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image: FileImage(
+                                                                    snapshot
+                                                                        .data),
+                                                                fit: BoxFit
+                                                                    .fitHeight,
+                                                              ),
+                                                              shape: BoxShape
+                                                                  .rectangle,
+                                                            ),
+                                                          );
+                                                        }
+                                                      }
+                                                      return Container(
+                                                        height: 50.0,
+                                                        width: 50.0,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            image: AssetImage(
+                                                                'lib/assets/images/cat.png'),
+                                                            fit: BoxFit
+                                                                .fitHeight,
+                                                          ),
+                                                          shape: BoxShape
+                                                              .rectangle,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),*/
                                                   subtitle: Text(jsonDecode(
                                                           projelistesi[index]
                                                               .comments[no])[
