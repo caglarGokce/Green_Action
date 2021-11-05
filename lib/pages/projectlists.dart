@@ -38,7 +38,6 @@ class _ProjeListsState extends State<ProjeLists> {
   _ProjeListsState(this.user);
   @override
   Widget build(BuildContext context) {
-    print(user.name);
     return Scaffold(
       body: Column(
         children: [
@@ -154,25 +153,32 @@ class _ProjeListsState extends State<ProjeLists> {
                                       projelistesi[index].questionsOn == true)
 
 //TODO put questions in an expansiontile
-                                    Card(
-                                      child: ListView.builder(
-                                        controller: _scrollController,
-                                        shrinkWrap: true,
-                                        itemCount: Question()
-                                            .formJson(projelistesi[index])
-                                            .length,
-                                        itemBuilder: (context, no) {
-                                          questionlist = ProjectModel()
-                                              .getQuestionListfromProjectModel(
-                                                  projelistesi[index]);
-                                          return ListTile(
-                                              title: Text(
-                                                  questionlist[no].question),
-                                              leading: Icon(Icons.person),
-                                              subtitle: Text(
-                                                  questionlist[no].answers));
-                                        },
-                                      ),
+                                    ExpansionTile(
+                                      title: Text('Questions'),
+                                      trailing: Icon(Icons.arrow_circle_down),
+                                      children: [
+                                        Card(
+                                          child: ListView.builder(
+                                            controller: _scrollController,
+                                            shrinkWrap: true,
+                                            itemCount: Question()
+                                                .formJson(projelistesi[index])
+                                                .length,
+                                            itemBuilder: (context, no) {
+                                              questionlist = ProjectModel()
+                                                  .getQuestionListfromProjectModel(
+                                                      projelistesi[index]);
+                                              return ListTile(
+                                                  title: Text(questionlist[no]
+                                                      .question),
+                                                  leading: Icon(Icons.person),
+                                                  subtitle: Text(
+                                                      questionlist[no]
+                                                          .answers));
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   Divider(),
                                   SizedBox(
@@ -191,23 +197,32 @@ class _ProjeListsState extends State<ProjeLists> {
 //TODO put comments in an expansiontile
 //TODO put user image to leading
 //TODO read yaparken question fieldlere bak yoksa yaz
-                                    Card(
-                                      child: ListView.builder(
-                                        controller: _scrollController,
-                                        shrinkWrap: true,
-                                        itemCount:
-                                            projelistesi[index].comments.length,
-                                        itemBuilder: (context, no) {
-                                          return ListTile(
-                                              title: Text(jsonDecode(
-                                                  projelistesi[index].comments[
-                                                      no])['Username']),
-                                              leading: Icon(Icons.person),
-                                              subtitle: Text(jsonDecode(
-                                                  projelistesi[index].comments[
-                                                      no])['comment']));
-                                        },
-                                      ),
+                                    ExpansionTile(
+                                      title: Text('Comments'),
+                                      trailing: Icon(Icons.arrow_circle_down),
+                                      children: [
+                                        Card(
+                                          child: ListView.builder(
+                                            controller: _scrollController,
+                                            shrinkWrap: true,
+                                            itemCount: projelistesi[index]
+                                                .comments
+                                                .length,
+                                            itemBuilder: (context, no) {
+                                              return ListTile(
+                                                  title: Text(jsonDecode(
+                                                          projelistesi[index]
+                                                              .comments[no])[
+                                                      'Username']),
+                                                  leading: Icon(Icons.person),
+                                                  subtitle: Text(jsonDecode(
+                                                          projelistesi[index]
+                                                              .comments[no])[
+                                                      'comment']));
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   Row(
                                     children: [
