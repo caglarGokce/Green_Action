@@ -29,9 +29,19 @@ class ProjectModel {
   final int dislikes;
   final String launchdate;
   final int views;
+  final List applicants;
+  final List participants;
+  final bool iChoosePartcpnts;
+  final bool haveMessage;
+  final String message;
 
   const ProjectModel(
       {this.comments,
+      this.haveMessage,
+      this.message,
+      this.iChoosePartcpnts = true,
+      this.participants,
+      this.applicants,
       this.views = 0,
       this.launchdate,
       this.likes = 0,
@@ -39,7 +49,7 @@ class ProjectModel {
       this.isActive = true,
       this.organizedBy,
       this.isPhotoUploaded = false,
-      this.questions,
+      this.questions = '',
       this.projectid,
       this.commentsOn = true,
       this.questionsOn = true,
@@ -57,6 +67,11 @@ class ProjectModel {
       this.contactinfo});
 
   Map<String, dynamic> toMap() => {
+        'haveMessage': haveMessage,
+        'message': message,
+        'participants': participants,
+        'iChoosePartcpnts': iChoosePartcpnts,
+        'applicants': applicants,
         'views': views,
         'likes': likes,
         'dislikes': dislikes,
@@ -84,6 +99,11 @@ class ProjectModel {
     Map map = doc.data();
 
     return ProjectModel(
+        haveMessage: map['haveMessage'],
+        message: map['message'],
+        iChoosePartcpnts: map['iChoosePartcpnts'],
+        participants: map['participants'],
+        applicants: map['applicants'],
         views: map['views'],
         likes: map['likes'],
         dislikes: map['dislikes'],
@@ -135,10 +155,10 @@ class ProjectModel {
         questionlist.add(question);
       }
     }
-    print(jsonDecode(proje.questions));
-    print(jsonDecode(proje.questions)[0]);
-    print(jsonDecode(jsonDecode(proje.questions)[0]));
-    print(jsonDecode(jsonDecode(proje.questions)[0])['date']);
+    // print(jsonDecode(proje.questions));
+    // print(jsonDecode(proje.questions)[0]);
+    // print(jsonDecode(jsonDecode(proje.questions)[0]));
+    // print(jsonDecode(jsonDecode(proje.questions)[0])['date']);
     return questionlist;
   }
 

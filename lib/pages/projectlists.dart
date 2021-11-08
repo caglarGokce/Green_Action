@@ -151,8 +151,6 @@ class _ProjeListsState extends State<ProjeLists> {
                                     Text('View Project to ask a question'),
                                   if (projelistesi[index].questions != '' &&
                                       projelistesi[index].questionsOn == true)
-
-//TODO put questions in an expansiontile
                                     ExpansionTile(
                                       title: Text('Questions'),
                                       trailing: Icon(Icons.arrow_circle_down),
@@ -188,15 +186,15 @@ class _ProjeListsState extends State<ProjeLists> {
                                   Text('Comments'),
                                   if (projelistesi[index].commentsOn == false)
                                     Text('Comments are not expected'),
-                                  if (projelistesi[index].comments == null &&
+                                  if (projelistesi[index].comments.length ==
+                                          0 &&
                                       projelistesi[index].commentsOn == true)
                                     Text('There is no comment made yet'),
                                   if (projelistesi[index].commentsOn == true)
                                     Text('View Project to make a comment'),
-                                  if (projelistesi[index].comments != null &&
+                                  if (projelistesi[index].comments.length !=
+                                          0 &&
                                       projelistesi[index].commentsOn == true)
-
-//TODO put user image to leading
                                     ExpansionTile(
                                       title: Text('Comments'),
                                       trailing: Icon(Icons.arrow_circle_down),
@@ -215,7 +213,7 @@ class _ProjeListsState extends State<ProjeLists> {
                                                               .comments[no])[
                                                       'Username']),
                                                   leading: Icon(Icons.person),
-                                                  //PAramiz olunca
+                                                  //TODO Paramiz olunca
                                                   /*leading: FutureBuilder(
                                                     //redundant code, seperate it lately
                                                     future: ImageUploader()
@@ -429,4 +427,6 @@ class _ProjeListsState extends State<ProjeLists> {
       return projelistesi;
     });
   }
+  //TODO add delete buttons to comments question and projects??
+  //TODO put organizedBy name to the project leading
 }

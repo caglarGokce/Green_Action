@@ -15,6 +15,9 @@ File photoforFB;
 bool isPhotoUploaded = false;
 bool commentsOn = true;
 bool questionsOn = true;
+bool iChoosePartcpnts = false;
+bool chosePartRandom = true;
+bool firstPartcptes = true;
 
 // ignore: must_be_immutable
 class CreateProject extends StatelessWidget {
@@ -202,6 +205,7 @@ class CreateProject extends StatelessWidget {
         )),
         SwitchComments(),
         SwitchQuestions(),
+        Participants(),
         TextButton(
             onPressed: () async {
               var now = DateTime.now();
@@ -210,6 +214,7 @@ class CreateProject extends StatelessWidget {
               projectid = await FireStore().createProjectId();
 
               ProjectModel proje = ProjectModel(
+                  comments: [],
                   commentsOn: commentsOn,
                   questionsOn: questionsOn,
                   launchdate: date,
@@ -330,6 +335,36 @@ class _ProjectPhotoState extends State<ProjectPhoto> {
             }),
       ],
     );
+  }
+}
+
+class Participants extends StatefulWidget {
+  @override
+  _ParticipantsState createState() => _ParticipantsState();
+}
+
+class _ParticipantsState extends State<Participants> {
+  TextEditingController controller = TextEditingController();
+  TextInputFormatter integerformat =
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      if (iChoosePartcpnts == true)
+        Text('You will choose participants between applied people'),
+      if (iChoosePartcpnts == false)
+        Text('First applied people will  participate in the project'),
+      Switch(
+        value: iChoosePartcpnts,
+        onChanged: (value) {
+          setState(() {
+            iChoosePartcpnts = value;
+          });
+        },
+        activeTrackColor: Colors.yellow,
+        activeColor: Colors.orangeAccent,
+      ),
+    ]);
   }
 }
 /*

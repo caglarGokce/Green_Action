@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:greenaction/pages/myProjects.dart';
 import 'package:greenaction/pages/profile.dart';
 
 class SideDrawer extends StatelessWidget {
@@ -34,8 +35,11 @@ class SideDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.border_color),
-            title: Text('Feedback'),
-            onTap: () => {Navigator.of(context).pop()},
+            title: Text('My Projects'),
+            onTap: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyProjects()))
+            },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),

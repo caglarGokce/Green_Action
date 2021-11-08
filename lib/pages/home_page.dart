@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:greenaction/authentication.dart';
@@ -44,29 +42,30 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         drawer: SideDrawer(),
         appBar: AppBar(
-            actions: [
-              IconButton(
-                  icon: Icon(Icons.logout),
-                  onPressed: () {
-                    CustomAuthentication().signOut();
-                  })
+          actions: [
+            IconButton(
+                icon: Icon(Icons.logout),
+                onPressed: () {
+                  CustomAuthentication().signOut();
+                })
+          ],
+          title: Text('Home Page'),
+          backgroundColor: Colors.green,
+          bottom: TabBar(
+            unselectedLabelColor: Colors.amber,
+            tabs: [
+              Tab(
+                child: Text('News'),
+              ),
+              Tab(
+                child: Text('Chat'),
+              ),
+              Tab(
+                child: Text('Projects'),
+              ),
             ],
-            title: Text('Home Page'),
-            backgroundColor: Colors.green,
-            bottom: TabBar(
-              unselectedLabelColor: Colors.amber,
-              tabs: [
-                Tab(
-                  child: Text('News'),
-                ),
-                Tab(
-                  child: Text('Chat'),
-                ),
-                Tab(
-                  child: Text('Projects'),
-                ),
-              ],
-            )),
+          ),
+        ),
         body: TabBarView(
           children: [
             Column(

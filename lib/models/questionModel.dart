@@ -4,39 +4,43 @@ import 'package:greenaction/models/projectModel.dart';
 
 class Question {
   String question;
-  //List<Answer> answers;
   String answers;
-  int answerCounter;
   String date;
   String whoisAsking;
+  bool isreplied;
 
   Question(
       {this.question,
       this.answers,
-      this.answerCounter = 0,
       this.date,
-      this.whoisAsking});
+      this.whoisAsking,
+      this.isreplied = false});
 
   String toJson() {
     Map<String, dynamic> map = {
       'whoisAsking': whoisAsking,
       'question': question,
       'answers': answers,
-      'answerCounter': answerCounter,
-      'date': date
+      'date': date,
+      'isreplied': isreplied
     };
     return jsonEncode(map);
   }
 
   List formJson(ProjectModel proje) {
-    return jsonDecode(proje.questions);
+    List list = jsonDecode(proje.questions);
+    if (list == null) {
+      return [];
+    }
+    return list;
   }
 
   factory Question.fromFirestore(Map map) {
     return Question(
+        isreplied: map['isreplied'],
         question: map['question'],
         answers: map['answers'],
-        answerCounter: map['answerCounter'],
+        whoisAsking: map['whoisAsking'],
         date: map['date']);
   }
 
