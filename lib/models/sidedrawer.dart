@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:greenaction/models/user.dart';
 import 'package:greenaction/pages/myProjects.dart';
 import 'package:greenaction/pages/profile.dart';
 
+// ignore: must_be_immutable
 class SideDrawer extends StatelessWidget {
+  User user;
+  SideDrawer({this.user});
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -37,8 +41,10 @@ class SideDrawer extends StatelessWidget {
             leading: Icon(Icons.border_color),
             title: Text('My Projects'),
             onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyProjects()))
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyProjects(user: user)))
             },
           ),
           ListTile(

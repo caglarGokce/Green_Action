@@ -244,6 +244,7 @@ class CreateProject extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => PreviewProject(
+                            user: user,
                             proje: proje,
                           )));
             },

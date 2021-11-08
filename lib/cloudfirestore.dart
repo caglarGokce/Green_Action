@@ -51,7 +51,8 @@ class FireStore {
           'invitedBy': '',
           'motto': 'Hello Green!',
           'uid': uid,
-          'appliedProjects': null
+          'appliedProjects': [],
+          'organizedProjects': []
         };
         await _firestore
             .collection('GoodGreenUsers')

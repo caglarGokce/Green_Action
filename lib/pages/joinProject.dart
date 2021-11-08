@@ -32,7 +32,6 @@ class JoinProject extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                /*
                 String notes = controller.text;
                 var now = DateTime.now();
 
@@ -44,11 +43,8 @@ class JoinProject extends StatelessWidget {
                   'applicant': user.uid,
                   'data': applydata
                 };
-                Map<String, dynamic> d = {'projectid': proje.projectid};
 
                 String jsencoded = jsonEncode(data);
-                print(jsencoded);
-                String encodedproje = jsonEncode(d);
 
                 await _firestore
                     .collection('CreatedProjects201x')
@@ -60,8 +56,8 @@ class JoinProject extends StatelessWidget {
                     .collection('GoodGreenUsers')
                     .doc(user.uid)
                     .update({
-                  'appliedProjects': FieldValue.arrayUnion([encodedproje])
-                });*/
+                  'appliedProjects': FieldValue.arrayUnion([proje.projectid])
+                });
                 await showDialog(
                     context: context,
                     builder: (context) {

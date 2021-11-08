@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:greenaction/models/user.dart';
 
+// ignore: must_be_immutable
 class MyProjects extends StatelessWidget {
+  User user;
+  MyProjects({this.user});
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3, //tab count
+      length: 2, //tab count
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.green,
@@ -12,27 +16,34 @@ class MyProjects extends StatelessWidget {
             unselectedLabelColor: Colors.amber,
             tabs: [
               Tab(
-                child: Text('My Projects'),
+                child: Text('Organized Projects'),
               ),
               Tab(
-                child: Text('Joined Projects'),
-              ),
-              Tab(
-                child: Text('Past Projects'),
+                child: Text('Applied Projects'),
               ),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            Container(
-              child: Text('My Projects'),
+            Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: 0,
+                      itemBuilder: (context, item) {
+                        return Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Card(
+                            child: ListTile(),
+                          ),
+                        );
+                      }),
+                )
+              ],
             ),
             Container(
-              child: Text('Joined Projects'),
-            ),
-            Container(
-              child: Text('Past Projects'),
+              child: Text('Applied Projects'),
             ),
           ],
         ),

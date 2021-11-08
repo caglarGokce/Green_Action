@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:greenaction/cloudfirestore.dart';
 import 'package:greenaction/imageuploader.dart';
 import 'package:greenaction/models/projectModel.dart';
+import 'package:greenaction/models/user.dart';
 import 'package:greenaction/pages/createProject.dart';
 import 'package:greenaction/pages/home_page.dart';
 
 class PreviewProject extends StatelessWidget {
+  final User user;
   final ProjectModel proje;
-  const PreviewProject({this.proje});
+  const PreviewProject({this.proje, this.user});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,6 +109,14 @@ class PreviewProject extends StatelessWidget {
                       .collection('CreatedProjects201x')
                       .doc(proje.projectid)
                       .update(await FireStore().setProjectNo());
+
+                  await _firestore
+                      .collection('GoodGreenUsers')
+                      .doc(user.uid)
+                      .update({
+                    'organizedProjects':
+                        FieldValue.arrayUnion([proje.projectid])
+                  });
                   CreateProject().annulatephoto();
 
                   Navigator.pushAndRemoveUntil(

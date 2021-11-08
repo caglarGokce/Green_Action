@@ -13,9 +13,11 @@ class User {
   //List myComments;
   //List myQuestions;
   List appliedProjects;
+  List organizedProjects;
 
   User(
       {this.uid,
+      this.organizedProjects,
       this.appliedProjects,
       //    this.dislikes,
       this.email,
@@ -31,6 +33,7 @@ class User {
   Map<String, dynamic> toMap() => {
         //    'likes': likes,
         //    'dislikes': dislikes,
+        'organizedProjects': organizedProjects,
         'name': name,
         'email': email,
         'uid': uid,
@@ -49,6 +52,7 @@ class User {
     return User(
       //    likes: map['likes'],
       //    dislikes: map['dislikes'],
+      organizedProjects: map['organizedProjects'],
       name: map['name'],
       email: map['email'],
       uid: map['uid'],
