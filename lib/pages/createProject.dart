@@ -18,6 +18,8 @@ bool questionsOn = true;
 bool iChoosePartcpnts = false;
 bool chosePartRandom = true;
 bool firstPartcptes = true;
+bool haveMessage = false;
+String message = '';
 
 // ignore: must_be_immutable
 class CreateProject extends StatelessWidget {
@@ -206,6 +208,7 @@ class CreateProject extends StatelessWidget {
         SwitchComments(),
         SwitchQuestions(),
         Participants(),
+        HaveMessage(),
         TextButton(
             onPressed: () async {
               var now = DateTime.now();
@@ -214,6 +217,10 @@ class CreateProject extends StatelessWidget {
               projectid = await FireStore().createProjectId();
 
               ProjectModel proje = ProjectModel(
+                  haveMessage: haveMessage,
+                  participants: [],
+                  applicants: [],
+                  message: message,
                   comments: [],
                   commentsOn: commentsOn,
                   questionsOn: questionsOn,
@@ -345,8 +352,7 @@ class Participants extends StatefulWidget {
 
 class _ParticipantsState extends State<Participants> {
   TextEditingController controller = TextEditingController();
-  TextInputFormatter integerformat =
-      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -364,6 +370,78 @@ class _ParticipantsState extends State<Participants> {
         activeTrackColor: Colors.yellow,
         activeColor: Colors.orangeAccent,
       ),
+    ]);
+  }
+}
+
+class HaveMessage extends StatefulWidget {
+  @override
+  _HaveMessageState createState() => _HaveMessageState();
+}
+
+class _HaveMessageState extends State<HaveMessage> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      if (haveMessage == false)
+        Row(
+          children: [
+            Flexible(
+                child: Text(
+                    'Do you have a message to people applied to your project')),
+            Switch(
+              value: haveMessage,
+              onChanged: (value) {
+                setState(() {
+                  haveMessage = value;
+                });
+              },
+              activeTrackColor: Colors.yellow,
+              activeColor: Colors.orangeAccent,
+            ),
+          ],
+        ),
+      if (haveMessage == true)
+        Column(
+          children: [
+            Row(
+              children: [
+                Flexible(
+                  child: Text(
+                      'The message below will be shown to the people appliying to your project'),
+                ),
+                Switch(
+                  value: haveMessage,
+                  onChanged: (value) {
+                    setState(() {
+                      haveMessage = value;
+                    });
+                  },
+                  activeTrackColor: Colors.yellow,
+                  activeColor: Colors.orangeAccent,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 240,
+              child: Form(
+                  child: TextFormField(
+                maxLines: null,
+                minLines: null,
+                expands: true,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.note_add),
+                  hintText: 'Your message...',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+                onChanged: (val) {
+                  message = val;
+                },
+              )),
+            ),
+          ],
+        ),
     ]);
   }
 }

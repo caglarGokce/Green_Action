@@ -37,7 +37,7 @@ class ProjectModel {
 
   const ProjectModel(
       {this.comments,
-      this.haveMessage,
+      this.haveMessage = false,
       this.message,
       this.iChoosePartcpnts = true,
       this.participants,

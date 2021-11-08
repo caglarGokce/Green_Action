@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -33,20 +32,23 @@ class JoinProject extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                String comments = controller.text;
+                /*
+                String notes = controller.text;
                 var now = DateTime.now();
 
                 String applydata = Hesapla.dateTimeToString(now);
 
                 Map<String, dynamic> data = {
                   'username': user.name,
-                  'note': comments,
+                  'note': notes,
                   'applicant': user.uid,
                   'data': applydata
                 };
+                Map<String, dynamic> d = {'projectid': proje.projectid};
 
                 String jsencoded = jsonEncode(data);
                 print(jsencoded);
+                String encodedproje = jsonEncode(d);
 
                 await _firestore
                     .collection('CreatedProjects201x')
@@ -54,17 +56,33 @@ class JoinProject extends StatelessWidget {
                     .update({
                   'applicants': FieldValue.arrayUnion([jsencoded])
                 });
+                await _firestore
+                    .collection('GoodGreenUsers')
+                    .doc(user.uid)
+                    .update({
+                  'appliedProjects': FieldValue.arrayUnion([encodedproje])
+                });*/
                 await showDialog(
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text('email confirmation'),
+                        title: proje.iChoosePartcpnts == true
+                            ? Text(
+                                'You have succesfully applied to the project')
+                            : Text('You have joined to the project'),
                         content: SingleChildScrollView(
                           child: ListBody(
                             children: <Widget>[
-                              Text('We sent to a confirmation link'),
-                              Text(
-                                  'Please confirm your email to log in your accout'),
+                              if (proje.iChoosePartcpnts == true)
+                                if (proje.haveMessage == true)
+                                  Text(proje.message),
+                              if (proje.iChoosePartcpnts == true)
+                                if (proje.haveMessage == false)
+                                  Text(
+                                      'You can join the project after the confirmation of project organizer'),
+                              if (proje.iChoosePartcpnts == false)
+                                Text(
+                                    'You can contact the project organizer for questions'),
                             ],
                           ),
                         ),
