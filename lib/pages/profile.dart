@@ -1,24 +1,31 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:greenaction/authentication.dart';
 import 'package:greenaction/cloudfirestore.dart';
 import 'package:greenaction/imageuploader.dart';
 import 'package:greenaction/localStore.dart';
+import 'package:greenaction/models/user.dart';
 import 'package:greenaction/placeautocmplt.dart';
 
 enum profilepages { edit, profile }
+String locationresult = '';
 
+// ignore: must_be_immutable
 class Profil extends StatefulWidget {
+  User user;
+  Profil({@required this.user});
   @override
-  _ProfilState createState() => _ProfilState();
+  _ProfilState createState() => _ProfilState(user: user);
 }
 
 class _ProfilState extends State<Profil> {
-  String location = 'location';
-  String name = 'name';
-  String myEmail = CustomAuthentication().getEmail();
-  String motto = 'motto';
+  User user;
+  _ProfilState({@required this.user});
+
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   profilepages _profilepages = profilepages.profile;
 
   @override
@@ -81,69 +88,43 @@ class _ProfilState extends State<Profil> {
                       await ImageUploader().uploadPic(image);
                       setState(() {});
                     }),
-                IconButton(
-                    icon: Icon(Icons.camera),
-                    onPressed: () async {
-                      String emaiul = CustomAuthentication().getEmail();
-                      print(emaiul);
-                    }),
               ],
             ),
-            FutureBuilder<Map>(
-                future: LocalStore().getFilePath(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    print('Snaphot:${snapshot.data}');
-                    print(snapshot.data);
-                    print(snapshot.data);
-                    return Text('error');
-                  }
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          snapshot.data['name'],
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          snapshot.data['motto'],
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          snapshot.data['location'],
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          myEmail,
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    );
-                  }
-                  return Center(child: CircularProgressIndicator());
-                }),
+            Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  user.name,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  user.motto,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  user.location,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  user.email,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
             FutureBuilder<bool>(
                 future: invitedBy,
                 builder: (context, snapshot) {
@@ -189,7 +170,7 @@ class _ProfilState extends State<Profil> {
                 obscureText: false,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.note_add),
-                  hintText: 'Name',
+                  hintText: user.name,
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20)),
                 ),
@@ -201,36 +182,76 @@ class _ProfilState extends State<Profil> {
                 obscureText: false,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.note_add),
-                  hintText: 'Fuckin motto',
+                  hintText: user.motto,
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20)),
                 ),
               ),
             ),
-            Row(
-              children: [
-                Text(LocationFinder().getLocation()),
-                ElevatedButton(
-                    onPressed: () async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LocationFinder()));
-                    },
-                    child: Text('search adress')),
-              ],
-            ),
+            SettingLocationState(),
             ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   //add try catcth
-                  FireStore().uploadDatatoFB(LocationFinder().getLocation(),
-                      nameController.text, mottoController.text);
+
+                  user.name = nameController.text == ''
+                      ? user.name
+                      : nameController.text;
+                  user.motto = mottoController.text == ''
+                      ? user.motto
+                      : mottoController.text;
+                  user.location = locationresult;
+                  Map uploadingmap = user.toMap();
+
+                  await _firestore
+                      .collection('GoodGreenUsers')
+                      .doc(user.uid)
+                      .update(uploadingmap);
+                  setState(() {
+                    _profilepages = profilepages.profile;
+                  });
                 },
                 child: Text('Update'))
           ],
         ),
       ),
     );
+  }
+}
+
+class SettingLocationState extends StatefulWidget {
+  @override
+  _SettingStateState createState() => _SettingStateState();
+}
+
+class _SettingStateState extends State<SettingLocationState> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Flexible(child: Text(locationresult ?? 'Location')),
+            SizedBox(
+              width: 13,
+            ),
+            ElevatedButton(
+                onPressed: () async {
+                  setResultState(locationresult);
+                  print(locationresult);
+                },
+                child: Text('search adress')),
+          ],
+        ),
+      ],
+    );
+  }
+
+  void setResultState(givenresult) async {
+    locationresult = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LocationFinder()));
+    setState(() {
+      givenresult = locationresult;
+    });
   }
 }
 

@@ -29,7 +29,11 @@ class SideDrawer extends StatelessWidget {
             title: Text('Profile'),
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Profil()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Profil(
+                            user: user,
+                          )));
             },
           ),
           ListTile(
