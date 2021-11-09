@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:greenaction/authentication.dart';
-import 'package:greenaction/localStore.dart';
+//import 'package:greenaction/localStore.dart';
 
 class FireStore {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool exist = true;
   bool invitedBy = false;
-
+/*
 //gets data from firebase and saves file to appDir
   Future<void> getDataFromFB() async {
     String uid = CustomAuthentication().getUID();
@@ -33,7 +33,7 @@ class FireStore {
     await _firestore.collection('GoodGreenUsers').doc(uid).update(data);
     LocalStore().saveFile(name, location, motto);
   }
-
+*/
   void uploadFieldstoFB(email, uid) async {
     print('uploadfieldstoFB called');
 

@@ -1,14 +1,14 @@
-import 'dart:convert';
-
+//import 'dart:convert';
+/*
 import 'package:greenaction/authentication.dart';
 import 'package:greenaction/cloudfirestore.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
-
-class LocalStore {
-  Future<Map> getFilePath() async {
+*/
+//class LocalStore {
+  /*Future<Map> getFilePath() async {
     print('getfilePath function called');
     Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
 
@@ -31,7 +31,7 @@ class LocalStore {
 
         CustomAuthentication().firstPrefSetTrue();
 
-        await FireStore().getDataFromFB();
+        //await FireStore().getDataFromFB();
 
         File file = File(
             '${appDocumentsDirectory.path}/profileinfoof${CustomAuthentication().getUID()}.txt');
@@ -46,8 +46,8 @@ class LocalStore {
       Map map = jsonDecode(await readFile(file));
       return map;
     }
-  }
-
+  }*/
+/*
   Future saveFile(String name, String location, String motto) async {
     Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
     File file = File(
@@ -55,7 +55,7 @@ class LocalStore {
     file.writeAsString(convertProfileToJString(name, location, motto)); // 2
     print('saveFile Called');
   }
-
+*/ /*
   Future<String> readFile(file) async {
     String fileContent = await file.readAsString(); // 2
     print('readFile: $fileContent');
@@ -85,5 +85,5 @@ class LocalStore {
     print('createDefaultMap: $returnableMap');
 
     return returnableMap;
-  }
-}
+  }*/
+//}

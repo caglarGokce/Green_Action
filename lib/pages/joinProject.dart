@@ -43,8 +43,14 @@ class JoinProject extends StatelessWidget {
                   'applicant': user.uid,
                   'data': applydata
                 };
+                Map<String, dynamic> projedata = {
+                  'projectid': proje.projectid,
+                  'headline': proje.headline,
+                  'shortInfo': proje.shortdetail,
+                };
 
                 String jsencoded = jsonEncode(data);
+                String projejs = jsonEncode(projedata);
 
                 await _firestore
                     .collection('CreatedProjects201x')
@@ -56,7 +62,7 @@ class JoinProject extends StatelessWidget {
                     .collection('GoodGreenUsers')
                     .doc(user.uid)
                     .update({
-                  'appliedProjects': FieldValue.arrayUnion([proje.projectid])
+                  'appliedProjects': FieldValue.arrayUnion([projejs])
                 });
                 await showDialog(
                     context: context,

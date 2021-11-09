@@ -256,6 +256,27 @@ class CreateProject extends StatelessWidget {
   void annulatephoto() {
     photo = null;
   }
+  //TODO location can be virtual
+  //TODO participants may not be needed
+  //TODO projects date may start on when participants gathered or
+  //donation gathered
+  //or indefinite time
+  // or there is no start time it is a constant project
+  // can participants join on going project
+
+  //projenin belli bir baslangic tarihi var mi(proje bu tarihte baslamak zorunda)
+  //belli tarihler arasinda baslayacak(mesela mart ayinda baslayacak. martin 31 inde otomatik baslar.
+  // mart icinde birgun organizator projeyi baslatabilir)
+  // baslangic icin esneklik var mi(sinirsiz veya belli bir sure)
+
+  //projenin belli bir bitis tarihi var mi(proje bu tarihten oteye gecemeyecek sonlanacak)
+  //belli tarhler arasinda sonlanacak(mesela aralik ayi icinde aralik 31 de proje kendisi sonlanir.
+  // aralik ayi icinde organizator herhangi bir gun sonlandirabilir)
+  //projenin bitis tarihi kesin mi(bir esneklik olabilir mi)(sinirsiz veya belli bir sure)
+
+  //projenin belli bir termin suresi var mi(proje basladiktan sonra bu sure icinde bitmek zorunda)
+  //(belli bir sure uzatilabilir)
+
 }
 
 class SwitchQuestions extends StatefulWidget {

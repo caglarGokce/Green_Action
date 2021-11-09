@@ -109,13 +109,17 @@ class PreviewProject extends StatelessWidget {
                       .collection('CreatedProjects201x')
                       .doc(proje.projectid)
                       .update(await FireStore().setProjectNo());
-
+                  Map<String, dynamic> projedata = {
+                    'projectid': proje.projectid,
+                    'headline': proje.headline,
+                    'shortInfo': proje.shortdetail,
+                  };
+                  String jsencoded = jsonEncode(projedata);
                   await _firestore
                       .collection('GoodGreenUsers')
                       .doc(user.uid)
                       .update({
-                    'organizedProjects':
-                        FieldValue.arrayUnion([proje.projectid])
+                    'organizedProjects': FieldValue.arrayUnion([jsencoded])
                   });
                   CreateProject().annulatephoto();
 
