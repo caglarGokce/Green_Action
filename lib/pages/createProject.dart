@@ -20,6 +20,8 @@ bool chosePartRandom = true;
 bool firstPartcptes = true;
 bool haveMessage = false;
 String message = '';
+bool projectstartcheckbox = true;
+bool projectstartbetweencheckbox = true;
 
 // ignore: must_be_immutable
 class CreateProject extends StatelessWidget {
@@ -138,47 +140,11 @@ class CreateProject extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
-        Form(
-            child: TextFormField(
-          onTap: () async {
-            var _projectDate = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime.now(),
-              lastDate: DateTime((DateTime.now().year + 10),
-                  DateTime.now().month, DateTime.now().day),
-            );
-            projectStart.text = Hesapla.dateTimeToString(_projectDate);
-          },
-          controller: projectStart,
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.note_add),
-            hintText: 'project starting time',
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          ),
-        )),
+        ProjStartdate(projectStart: projectStart),
         SizedBox(
           height: 20,
         ),
-        Form(
-            child: TextFormField(
-          onTap: () async {
-            var _projectDate = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime.now(),
-              lastDate: DateTime((DateTime.now().year + 10),
-                  DateTime.now().month, DateTime.now().day),
-            );
-            projectdeadline.text = Hesapla.dateTimeToString(_projectDate);
-          },
-          controller: projectdeadline,
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.note_add),
-            hintText: 'project deadline',
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          ),
-        )),
+        ProjFinishDate(projectdeadline: projectdeadline),
         SizedBox(
           height: 20,
         ),
@@ -277,6 +243,117 @@ class CreateProject extends StatelessWidget {
   //projenin belli bir termin suresi var mi(proje basladiktan sonra bu sure icinde bitmek zorunda)
   //(belli bir sure uzatilabilir)
 
+}
+
+class ProjFinishDate extends StatelessWidget {
+  const ProjFinishDate({
+    Key key,
+    @required this.projectdeadline,
+  }) : super(key: key);
+
+  final TextEditingController projectdeadline;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+        child: TextFormField(
+      onTap: () async {
+        var _projectDate = await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime.now(),
+          lastDate: DateTime((DateTime.now().year + 10), DateTime.now().month,
+              DateTime.now().day),
+        );
+        projectdeadline.text = Hesapla.dateTimeToString(_projectDate);
+      },
+      controller: projectdeadline,
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.note_add),
+        hintText: 'project deadline',
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+    ));
+  }
+}
+
+class ProjStartdate extends StatefulWidget {
+  const ProjStartdate({
+    Key key,
+    @required this.projectStart,
+  }) : super(key: key);
+
+  final TextEditingController projectStart;
+
+  @override
+  _ProjStartdateState createState() => _ProjStartdateState();
+}
+
+class _ProjStartdateState extends State<ProjStartdate> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Does your project have a starting date?'),
+        Row(children: [
+          if (projectstartcheckbox == true) Text('Yes it has'),
+          if (projectstartcheckbox == false) Text('No it hasnt'),
+          Switch(
+            value: projectstartcheckbox,
+            onChanged: (value) {
+              setState(() {
+                projectstartcheckbox = value;
+              });
+            },
+            activeTrackColor: Colors.yellow,
+            activeColor: Colors.orangeAccent,
+          ),
+        ]),
+        if (projectstartcheckbox == true)
+          Column(
+            children: [
+              Form(
+                  child: TextFormField(
+                onTap: () async {
+                  var _projectDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime((DateTime.now().year + 10),
+                        DateTime.now().month, DateTime.now().day),
+                  );
+                  widget.projectStart.text =
+                      Hesapla.dateTimeToString(_projectDate);
+                },
+                controller: widget.projectStart,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.note_add),
+                  hintText: 'project starting time',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+              )),
+            ],
+          ),
+        if (projectstartcheckbox == false)
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(5),
+                    fillColor: Colors.blue.shade100,
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
 }
 
 class SwitchQuestions extends StatefulWidget {
