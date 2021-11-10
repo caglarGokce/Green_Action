@@ -21,6 +21,12 @@ bool firstPartcptes = true;
 bool haveMessage = false;
 String message = '';
 bool projectstartcheckbox = true;
+bool projectstartcheckbox2 = true;
+bool projectstartcheckbox3 = false;
+bool projectstartcheckbox4 = false;
+bool projectstartcheckbox5 = false;
+int numberofparticipants = 0;
+int amountofdonation = 0;
 bool projectstartbetweencheckbox = true;
 
 // ignore: must_be_immutable
@@ -35,6 +41,8 @@ class CreateProject extends StatelessWidget {
     TextEditingController sinfo = TextEditingController();
     TextEditingController location = TextEditingController();
     TextEditingController projectStart = TextEditingController();
+    TextEditingController projectStartbetween1 = TextEditingController();
+    TextEditingController projectStartbetween2 = TextEditingController();
     TextEditingController prize = TextEditingController();
     TextEditingController projectdetails = TextEditingController();
     TextEditingController minnumberofparticipants = TextEditingController();
@@ -113,16 +121,18 @@ class CreateProject extends StatelessWidget {
           height: 20,
         ),
         Form(
-            child: TextFormField(
-          keyboardType: TextInputType.number,
-          controller: minnumberofparticipants,
-          inputFormatters: [integerformat],
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.note_add),
-            hintText: 'minimum participants needed',
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+          child: TextFormField(
+            keyboardType: TextInputType.number,
+            controller: minnumberofparticipants,
+            inputFormatters: [integerformat],
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.note_add),
+              hintText: 'minimum participants needed',
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+            ),
           ),
-        )),
+        ),
         SizedBox(
           height: 20,
         ),
@@ -140,10 +150,27 @@ class CreateProject extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
-        ProjStartdate(projectStart: projectStart),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Divider(
+            color: Colors.green,
+          ),
+        ),
+        SizedBox(height: 20),
+        ProjStartdate(
+            projectStart: projectStart,
+            projectStartbetween1: projectStartbetween1,
+            projectStartbetween2: projectStartbetween2),
         SizedBox(
           height: 20,
         ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Divider(
+            color: Colors.green,
+          ),
+        ),
+        SizedBox(height: 20),
         ProjFinishDate(projectdeadline: projectdeadline),
         SizedBox(
           height: 20,
@@ -278,12 +305,14 @@ class ProjFinishDate extends StatelessWidget {
 }
 
 class ProjStartdate extends StatefulWidget {
-  const ProjStartdate({
-    Key key,
-    @required this.projectStart,
-  }) : super(key: key);
+  const ProjStartdate(
+      {@required this.projectStart,
+      @required this.projectStartbetween1,
+      @required this.projectStartbetween2});
 
   final TextEditingController projectStart;
+  final TextEditingController projectStartbetween1;
+  final TextEditingController projectStartbetween2;
 
   @override
   _ProjStartdateState createState() => _ProjStartdateState();
@@ -292,65 +321,284 @@ class ProjStartdate extends StatefulWidget {
 class _ProjStartdateState extends State<ProjStartdate> {
   @override
   Widget build(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text('Do you want project to start  as soon as you launch it?'),
+      Row(children: [
+        if (projectstartcheckbox3 == true)
+          Text('Yes, start the project as soon as it is listed'),
+        if (projectstartcheckbox3 == false) Text('No, i want to wait'),
+        Switch(
+          value: projectstartcheckbox3,
+          onChanged: (value) {
+            setState(() {
+              projectstartcheckbox3 = value;
+            });
+          },
+          activeTrackColor: Colors.yellow,
+          activeColor: Colors.orangeAccent,
+        ),
+      ]),
+      if (projectstartcheckbox3 == false)
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Does your project have a starting date?'),
+            Row(children: [
+              if (projectstartcheckbox == true) Text('Yes it has'),
+              if (projectstartcheckbox == false) Text('No it hasnt'),
+              Switch(
+                value: projectstartcheckbox,
+                onChanged: (value) {
+                  setState(() {
+                    projectstartcheckbox = value;
+                  });
+                },
+                activeTrackColor: Colors.yellow,
+                activeColor: Colors.orangeAccent,
+              ),
+            ]),
+            if (projectstartcheckbox == true)
+              Column(
+                children: [
+                  Text(
+                      'Does your project have a definite starting date or may start in between 2 dates?'),
+                  Row(children: [
+                    if (projectstartcheckbox2 == true)
+                      Text('Project starts on a definite time'),
+                    if (projectstartcheckbox2 == false)
+                      Text('Project may start between 2 dates'),
+                    Switch(
+                      value: projectstartcheckbox2,
+                      onChanged: (value) {
+                        setState(() {
+                          projectstartcheckbox2 = value;
+                        });
+                      },
+                      activeTrackColor: Colors.yellow,
+                      activeColor: Colors.orangeAccent,
+                    ),
+                  ]),
+                  if (projectstartcheckbox2 == true)
+                    Column(
+                      children: [
+                        Form(
+                            child: TextFormField(
+                          onTap: () async {
+                            var _projectDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime((DateTime.now().year + 10),
+                                  DateTime.now().month, DateTime.now().day),
+                            );
+                            widget.projectStart.text =
+                                Hesapla.dateTimeToString(_projectDate);
+                          },
+                          controller: widget.projectStart,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.note_add),
+                            hintText: 'project starting time',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                        )),
+                      ],
+                    ),
+                  if (projectstartcheckbox2 == false)
+                    Column(
+                      children: [
+                        Text('Project may start between '),
+                        Form(
+                            child: TextFormField(
+                          onTap: () async {
+                            var _projectDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime((DateTime.now().year + 10),
+                                  DateTime.now().month, DateTime.now().day),
+                            );
+                            widget.projectStartbetween1.text =
+                                Hesapla.dateTimeToString(_projectDate);
+                          },
+                          controller: widget.projectStartbetween1,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.note_add),
+                            hintText: 'project may start...',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                        )),
+                        Text('and'),
+                        Form(
+                            child: TextFormField(
+                          onTap: () async {
+                            var _projectDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime((DateTime.now().year + 10),
+                                  DateTime.now().month, DateTime.now().day),
+                            );
+                            widget.projectStartbetween2.text =
+                                Hesapla.dateTimeToString(_projectDate);
+                          },
+                          controller: widget.projectStartbetween2,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.note_add),
+                            hintText: 'project may start...',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                        )),
+                      ],
+                    ),
+                ],
+              ),
+            if (projectstartcheckbox == false)
+              Column(
+                children: [
+                  Text(
+                      'Do you need minimum number of participants to start this project?'),
+                  Row(children: [
+                    if (projectstartcheckbox4 == true) Text('Yes i do'),
+                    if (projectstartcheckbox4 == false) Text('No i dont'),
+                    Switch(
+                      value: projectstartcheckbox4,
+                      onChanged: (value) {
+                        setState(() {
+                          projectstartcheckbox4 = value;
+                        });
+                      },
+                      activeTrackColor: Colors.yellow,
+                      activeColor: Colors.orangeAccent,
+                    ),
+                  ]),
+                  if (projectstartcheckbox4 == true) ConditionParticipants(),
+                  Text(
+                      'Do you need minimum amount of donation to start this project?'),
+                  Row(
+                    children: [
+                      if (projectstartcheckbox5 == true) Text('Yes i do'),
+                      if (projectstartcheckbox5 == false) Text('No i dont'),
+                      Switch(
+                        value: projectstartcheckbox5,
+                        onChanged: (value) {
+                          setState(() {
+                            projectstartcheckbox5 = value;
+                          });
+                        },
+                        activeTrackColor: Colors.yellow,
+                        activeColor: Colors.orangeAccent,
+                      ),
+                    ],
+                  ),
+                  if (projectstartcheckbox5 == true) ConditionDonation(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text('Do you have another condition to start project? '),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(5),
+                        fillColor: Colors.blue.shade100,
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+          ],
+        )
+    ]);
+  }
+}
+
+class ConditionDonation extends StatefulWidget {
+  @override
+  _ConditionDonationState createState() => _ConditionDonationState();
+}
+
+class _ConditionDonationState extends State<ConditionDonation> {
+  TextEditingController controllerdonation = TextEditingController();
+  TextInputFormatter integerformat =
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+  @override
+  Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Does your project have a starting date?'),
-        Row(children: [
-          if (projectstartcheckbox == true) Text('Yes it has'),
-          if (projectstartcheckbox == false) Text('No it hasnt'),
-          Switch(
-            value: projectstartcheckbox,
-            onChanged: (value) {
+        Text(
+          'Project will start when  amount of donations will reach $amountofdonation',
+        ),
+        Container(
+          child: TextFormField(
+            keyboardType: TextInputType.number,
+            controller: controllerdonation,
+            onChanged: (_) {
               setState(() {
-                projectstartcheckbox = value;
+                if (controllerdonation.text.isEmpty) {
+                  amountofdonation = 0;
+                } else {
+                  amountofdonation = int.parse(controllerdonation.text);
+                }
               });
             },
-            activeTrackColor: Colors.yellow,
-            activeColor: Colors.orangeAccent,
+            inputFormatters: [integerformat],
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(5),
+              fillColor: Colors.blue.shade100,
+              border: OutlineInputBorder(),
+            ),
           ),
-        ]),
-        if (projectstartcheckbox == true)
-          Column(
-            children: [
-              Form(
-                  child: TextFormField(
-                onTap: () async {
-                  var _projectDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime((DateTime.now().year + 10),
-                        DateTime.now().month, DateTime.now().day),
-                  );
-                  widget.projectStart.text =
-                      Hesapla.dateTimeToString(_projectDate);
-                },
-                controller: widget.projectStart,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.note_add),
-                  hintText: 'project starting time',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                ),
-              )),
-            ],
+        ),
+      ],
+    );
+  }
+}
+
+class ConditionParticipants extends StatefulWidget {
+  @override
+  _ConditionParticipantsState createState() => _ConditionParticipantsState();
+}
+
+class _ConditionParticipantsState extends State<ConditionParticipants> {
+  TextInputFormatter integerformat =
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+  TextEditingController controllerpartcpnt = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'Project will start when  number of participants will reach $numberofparticipants',
+        ),
+        Container(
+          child: TextFormField(
+            keyboardType: TextInputType.number,
+            controller: controllerpartcpnt,
+            onChanged: (_) {
+              setState(() {
+                if (controllerpartcpnt.text.isEmpty) {
+                  numberofparticipants = 0;
+                } else {
+                  numberofparticipants = int.parse(controllerpartcpnt.text);
+                }
+              });
+            },
+            inputFormatters: [integerformat],
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(5),
+              fillColor: Colors.blue.shade100,
+              border: OutlineInputBorder(),
+            ),
           ),
-        if (projectstartcheckbox == false)
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(5),
-                    fillColor: Colors.blue.shade100,
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-            ],
-          ),
+        ),
+        SizedBox(
+          height: 15,
+        ),
       ],
     );
   }
