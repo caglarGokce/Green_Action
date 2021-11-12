@@ -27,18 +27,23 @@ bool projectstartcheckbox4 = false;
 bool projectstartcheckbox5 = false;
 bool projectstartcheckbox6 = true;
 bool projectstartcheckbox7 = true;
-
+bool projectstartcheckbox8 = true;
+bool projectstartcheckbox9 = true;
+bool projectstartcheckbox10 = true;
 int numberofparticipants = 0;
 int amountofdonation = 0;
 bool projectstartbetweencheckbox = true;
 int begininint = 0;
 String begininstring = 'day';
+int begininint1 = 0;
+String begininstring1 = 'day';
 int priorint = 0;
 String priorstring = 'day';
+int priorint1 = 0;
+String priorstring1 = 'day';
 String dropdownValueprior = 'day';
 String dropdownValuebeginin = 'day';
-int afterint = 0;
-String afterstring = 'day';
+String inafterstring = 'in';
 List<DropdownMenuItem<String>> list = [
   DropdownMenuItem(
     child: Text('day'),
@@ -56,6 +61,16 @@ List<DropdownMenuItem<String>> list = [
     child: Text('year'),
     value: 'year',
   )
+];
+List<DropdownMenuItem<String>> list1 = [
+  DropdownMenuItem(
+    child: Text('in'),
+    value: 'in',
+  ),
+  DropdownMenuItem(
+    child: Text('after'),
+    value: 'after',
+  ),
 ];
 
 // ignore: must_be_immutable
@@ -352,7 +367,7 @@ class _ProjStartdateState extends State<ProjStartdate> {
   TextEditingController controllerbegininint = TextEditingController();
   TextEditingController controllerbegininstring = TextEditingController();
   TextEditingController controllerpriorinstring = TextEditingController();
-  String _value = 'day';
+
   TextInputFormatter integerformat =
       FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
   @override
@@ -571,52 +586,59 @@ class _ProjStartdateState extends State<ProjStartdate> {
                           ),
                         ),
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                                 'Do you want project to start immediately after the conditions reached?'),
-                            Text('yes/no'),
-                            Text(
-                                'Do you want to start it in certain time interval or you will arrange starting time after the conditions reached?'),
-                            Text(
-                                'I will notify participants prior to ??? days/weeks'),
-                            Text(
-                                'Project may start after $afterint $afterstring when the conditions reached'),
-                            Text(
-                                'Will project start immediately or in some time interval after the conditions reached'),
                             Row(
                               children: [
-                                Container(
-                                  width: 60,
-                                  height: 15,
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(5),
-                                      fillColor: Colors.blue.shade100,
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                ),
-                                DropdownButton(
-                                  items: list,
-                                  value: _value,
-                                  icon: const Icon(Icons.arrow_downward),
-                                  iconSize: 24,
-                                  elevation: 16,
-                                  style:
-                                      const TextStyle(color: Colors.deepPurple),
-                                  underline: Container(
-                                    height: 2,
-                                    color: Colors.deepPurpleAccent,
-                                  ),
-                                  onChanged: (String newValue) {
+                                if (projectstartcheckbox8 == true)
+                                  Text('Yes, start project immediately'),
+                                if (projectstartcheckbox8 == false)
+                                  Text("No, don't start immediately"),
+                                Switch(
+                                  value: projectstartcheckbox8,
+                                  onChanged: (value) {
                                     setState(() {
-                                      _value = newValue;
+                                      projectstartcheckbox8 = value;
                                     });
                                   },
-                                )
+                                  activeTrackColor: Colors.yellow,
+                                  activeColor: Colors.orangeAccent,
+                                ),
                               ],
-                            )
+                            ),
+                            if (projectstartcheckbox8 == false)
+                              Column(
+                                children: [
+                                  Text(
+                                      '////////////////////////////////////////////////////////////////////////////'),
+                                  Row(
+                                    children: [
+                                      if (projectstartcheckbox9 == true)
+                                        Text('The project will start in:'),
+                                      if (projectstartcheckbox9 == false)
+                                        Text(
+                                            "I will notify participants prior to:"),
+                                      Switch(
+                                        value: projectstartcheckbox9,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            projectstartcheckbox9 = value;
+                                          });
+                                        },
+                                        activeTrackColor: Colors.yellow,
+                                        activeColor: Colors.orangeAccent,
+                                      ),
+                                    ],
+                                  ),
+                                  if (projectstartcheckbox9 == false)
+                                    WillNotifyPrior2(),
+                                  if (projectstartcheckbox9 == true)
+                                    Column(
+                                      children: [WillBeginIn2()],
+                                    )
+                                ],
+                              ),
                           ],
                         )
                       ],
@@ -627,38 +649,8 @@ class _ProjStartdateState extends State<ProjStartdate> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              'Please inform participants about when they will be notified'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
                           child: WillNotifyPrior(),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              'At the end notification time, after $priorint $priorstring, will project start immediately or may start in an interval of some time?'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(children: [
-                            if (projectstartcheckbox7 == true)
-                              Text('It will start immediately'),
-                            if (projectstartcheckbox7 == false)
-                              Text('It may start in an interval of some time'),
-                            Switch(
-                              value: projectstartcheckbox7,
-                              onChanged: (value) {
-                                setState(() {
-                                  projectstartcheckbox7 = value;
-                                });
-                              },
-                              activeTrackColor: Colors.yellow,
-                              activeColor: Colors.orangeAccent,
-                            ),
-                          ]),
-                        ),
-                        if (projectstartcheckbox7 == false) WillBeginIn(),
                       ],
                     )
                 ],
@@ -666,6 +658,134 @@ class _ProjStartdateState extends State<ProjStartdate> {
           ],
         )
     ]);
+  }
+}
+
+class WillBeginIn2 extends StatefulWidget {
+  @override
+  _WillBeginIn2State createState() => _WillBeginIn2State();
+}
+
+class _WillBeginIn2State extends State<WillBeginIn2> {
+  TextEditingController controller = TextEditingController();
+
+  TextInputFormatter integerformat =
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+  String _value = begininstring1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('And then the project will begin $begininint1 $begininstring1 '),
+        Row(
+          children: [
+            Container(
+              width: 60,
+              height: 30,
+              child: TextField(
+                controller: controller,
+                inputFormatters: [integerformat],
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(5),
+                  fillColor: Colors.blue.shade100,
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (_) {
+                  setState(() {
+                    begininint1 = int.parse(controller.text);
+                  });
+                },
+              ),
+            ),
+            DropdownButton(
+              items: list,
+              value: _value,
+              icon: const Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              style: const TextStyle(color: Colors.deepPurple),
+              underline: Container(
+                height: 2,
+                color: Colors.deepPurpleAccent,
+              ),
+              onChanged: (newValue) {
+                setState(() {
+                  _value = newValue;
+                  begininstring1 = _value;
+                });
+              },
+            )
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class WillNotifyPrior2 extends StatefulWidget {
+  @override
+  _WillNotifyPrior2State createState() => _WillNotifyPrior2State();
+}
+
+class _WillNotifyPrior2State extends State<WillNotifyPrior2> {
+  TextEditingController controller = TextEditingController();
+
+  TextInputFormatter integerformat =
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+  String _value = priorstring1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        //Text('How much time prior to the start will you notify participants?'),
+        //Text('I will notify $priorint1 $priorstring1 prior to the start'),
+        Text('$priorint1 $priorstring1'),
+        Row(
+          children: [
+            Container(
+              width: 60,
+              height: 30,
+              child: TextField(
+                controller: controller,
+                inputFormatters: [integerformat],
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(5),
+                  fillColor: Colors.blue.shade100,
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (_) {
+                  setState(() {
+                    priorint1 = int.parse(controller.text);
+                  });
+                },
+              ),
+            ),
+            DropdownButton(
+              items: list,
+              value: _value,
+              icon: const Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              style: const TextStyle(color: Colors.deepPurple),
+              underline: Container(
+                height: 2,
+                color: Colors.deepPurpleAccent,
+              ),
+              onChanged: (newValue) {
+                setState(() {
+                  _value = newValue;
+                  priorstring1 = _value;
+                });
+              },
+            )
+          ],
+        )
+      ],
+    );
   }
 }
 
@@ -683,12 +803,19 @@ class _WillNotifyPriorState extends State<WillNotifyPrior> {
 
   @override
   Widget build(BuildContext context) {
-    controller.text = priorint.toString();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-            'I will notify participants $priorint $priorstring prior to the start'),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+              'When will you notify participants about the project start?'),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+              'I will notify participants $priorint $priorstring prior to the start'),
+        ),
         Row(
           children: [
             Container(
@@ -728,7 +855,35 @@ class _WillNotifyPriorState extends State<WillNotifyPrior> {
               },
             )
           ],
-        )
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+              'At the end of the notification time, after $priorint $priorstring, will project start immediately or may start in an interval of some time?'),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(children: [
+            if (projectstartcheckbox7 == true)
+              Text('After $priorint $priorstring it will start immediately'),
+            if (projectstartcheckbox7 == false)
+              Flexible(
+                child: Text(
+                    'After $priorint $priorstring it may start in an interval of some time'),
+              ),
+            Switch(
+              value: projectstartcheckbox7,
+              onChanged: (value) {
+                setState(() {
+                  projectstartcheckbox7 = value;
+                });
+              },
+              activeTrackColor: Colors.yellow,
+              activeColor: Colors.orangeAccent,
+            ),
+          ]),
+        ),
+        if (projectstartcheckbox7 == false) WillBeginIn(),
       ],
     );
   }
@@ -748,11 +903,10 @@ class _WillBeginInState extends State<WillBeginIn> {
 
   @override
   Widget build(BuildContext context) {
-    controller.text = begininint.toString();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('And then the project will begin in $begininint $begininstring '),
+        Text('And then the project will begin $begininint $begininstring '),
         Row(
           children: [
             Container(
