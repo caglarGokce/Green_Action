@@ -29,7 +29,6 @@ bool projectstartcheckbox6 = true;
 bool projectstartcheckbox7 = true;
 bool projectstartcheckbox8 = true;
 bool projectstartcheckbox9 = true;
-bool projectstartcheckbox10 = true;
 int numberofparticipants = 0;
 int amountofdonation = 0;
 bool projectstartbetweencheckbox = true;
@@ -44,6 +43,17 @@ String priorstring1 = 'day';
 String dropdownValueprior = 'day';
 String dropdownValuebeginin = 'day';
 String inafterstring = 'in';
+String deadlinestring = 'day';
+int deadlineint = 0;
+int notifyint = 0;
+String notifystring = 'day';
+bool projectfinishcheckbox = true;
+bool projectfinishcheckbox1 = true;
+bool projectfinishcheckbox2 = true;
+bool projectfinishcheckbox3 = true;
+bool projectfinishcheckbox4 = true;
+bool projectfinishcheckbox5 = true;
+
 List<DropdownMenuItem<String>> list = [
   DropdownMenuItem(
     child: Text('day'),
@@ -201,6 +211,7 @@ class CreateProject extends StatelessWidget {
           ),
         ),
         SizedBox(height: 20),
+        //TODO projects in few sessions??
         ProjStartdate(
             projectStart: projectStart,
             projectStartbetween1: projectStartbetween1,
@@ -316,7 +327,7 @@ class CreateProject extends StatelessWidget {
 
 }
 
-class ProjFinishDate extends StatelessWidget {
+class ProjFinishDate extends StatefulWidget {
   const ProjFinishDate({
     Key key,
     @required this.projectdeadline,
@@ -325,26 +336,307 @@ class ProjFinishDate extends StatelessWidget {
   final TextEditingController projectdeadline;
 
   @override
+  _ProjFinishDateState createState() => _ProjFinishDateState();
+}
+
+class _ProjFinishDateState extends State<ProjFinishDate> {
+  TextEditingController projectfinishbetween1 = TextEditingController();
+  TextEditingController projectfinishbetween2 = TextEditingController();
+
+  TextInputFormatter integerformat =
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+  @override
   Widget build(BuildContext context) {
-    return Form(
-        child: TextFormField(
-      onTap: () async {
-        var _projectDate = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime.now(),
-          lastDate: DateTime((DateTime.now().year + 10), DateTime.now().month,
-              DateTime.now().day),
-        );
-        projectdeadline.text = Hesapla.dateTimeToString(_projectDate);
-      },
-      controller: projectdeadline,
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.note_add),
-        hintText: 'project deadline',
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-      ),
-    ));
+    return Column(
+      children: [
+        Text('Is there a certain finish time for the project?'),
+        Row(children: [
+          if (projectfinishcheckbox == true) Text('Yes,there is'),
+          if (projectfinishcheckbox == false) Text("No, there isn't"),
+          Switch(
+            value: projectfinishcheckbox,
+            onChanged: (value) {
+              setState(() {
+                projectfinishcheckbox = value;
+              });
+            },
+            activeTrackColor: Colors.yellow,
+            activeColor: Colors.orangeAccent,
+          ),
+        ]),
+        if (projectfinishcheckbox == true)
+          //project finishes on a certain date or in a certain time interval
+          Column(
+            children: [
+              Text(
+                  'Does project finish on certain date or in a certain time interval'),
+              Row(children: [
+                if (projectfinishcheckbox1 == true)
+                  Text('Finishes on a certain date'),
+                if (projectfinishcheckbox1 == false)
+                  Text("Finishes in a certain time interval "),
+                Switch(
+                  value: projectfinishcheckbox1,
+                  onChanged: (value) {
+                    setState(() {
+                      projectfinishcheckbox1 = value;
+                    });
+                  },
+                  activeTrackColor: Colors.yellow,
+                  activeColor: Colors.orangeAccent,
+                ),
+              ]),
+              if (projectfinishcheckbox1 == false)
+                //project finishes in a certain time interval+++++
+                Column(
+                  children: [
+                    Text('Project may finish between '),
+                    Form(
+                        child: TextFormField(
+                      onTap: () async {
+                        var _projectDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime((DateTime.now().year + 10),
+                              DateTime.now().month, DateTime.now().day),
+                        );
+                        projectfinishbetween1.text =
+                            Hesapla.dateTimeToString(_projectDate);
+                      },
+                      controller: projectfinishbetween1,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.note_add),
+                        hintText: 'project may finish...',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                    )),
+                    Text('and'),
+                    Form(
+                        child: TextFormField(
+                      onTap: () async {
+                        var _projectDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime((DateTime.now().year + 10),
+                              DateTime.now().month, DateTime.now().day),
+                        );
+                        projectfinishbetween2.text =
+                            Hesapla.dateTimeToString(_projectDate);
+                      },
+                      controller: projectfinishbetween2,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.note_add),
+                        hintText: 'project may finish...',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                    )),
+                  ],
+                ),
+              if (projectfinishcheckbox1 == true)
+                //project has a certain finish date+++++++
+                Column(
+                  children: [
+                    Form(
+                        child: TextFormField(
+                      onTap: () async {
+                        var _projectDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime((DateTime.now().year + 10),
+                              DateTime.now().month, DateTime.now().day),
+                        );
+                        widget.projectdeadline.text =
+                            Hesapla.dateTimeToString(_projectDate);
+                      },
+                      controller: widget.projectdeadline,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.note_add),
+                        hintText: 'project finish date',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                    )),
+                  ],
+                ),
+            ],
+          ),
+        if (projectfinishcheckbox == false)
+          //there is no certain finish time of the project
+          Column(
+            children: [
+              Text('Is there a deadline for the project?'),
+              Row(children: [
+                if (projectfinishcheckbox2 == true) Text('Yes,there is'),
+                if (projectfinishcheckbox2 == false) Text("No, there isn't"),
+                Switch(
+                  value: projectfinishcheckbox2,
+                  onChanged: (value) {
+                    setState(() {
+                      projectfinishcheckbox2 = value;
+                    });
+                  },
+                  activeTrackColor: Colors.yellow,
+                  activeColor: Colors.orangeAccent,
+                ),
+              ]),
+              if (projectfinishcheckbox2 == true) Deadline(),
+              if (projectfinishcheckbox2 == false)
+                Column(
+                  children: [
+                    Row(children: [
+                      if (projectfinishcheckbox3 == true)
+                        Text('The project has no end'),
+                      if (projectfinishcheckbox3 == false)
+                        Text(
+                            'I will inform participants about the end of project'),
+                      Switch(
+                        value: projectfinishcheckbox3,
+                        onChanged: (value) {
+                          setState(() {
+                            projectfinishcheckbox3 = value;
+                          });
+                        },
+                        activeTrackColor: Colors.yellow,
+                        activeColor: Colors.orangeAccent,
+                      ),
+                    ]),
+                    if (projectfinishcheckbox3 == false) NotifyFinish()
+                  ],
+                )
+            ],
+          )
+      ],
+    );
+  }
+}
+
+class NotifyFinish extends StatefulWidget {
+  @override
+  _NotifyFinishState createState() => _NotifyFinishState();
+}
+
+class _NotifyFinishState extends State<NotifyFinish> {
+  TextEditingController controller = TextEditingController();
+
+  TextInputFormatter integerformat =
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+
+  String _value = notifystring;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+            'I will notify participants $notifyint $notifystring before the end of the project'),
+        Row(
+          children: [
+            Container(
+              width: 60,
+              height: 30,
+              child: TextField(
+                controller: controller,
+                inputFormatters: [integerformat],
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(5),
+                  fillColor: Colors.blue.shade100,
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (_) {
+                  setState(() {
+                    notifyint = int.parse(controller.text);
+                  });
+                },
+              ),
+            ),
+            DropdownButton(
+              items: list,
+              value: _value,
+              icon: const Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              style: const TextStyle(color: Colors.deepPurple),
+              underline: Container(
+                height: 2,
+                color: Colors.deepPurpleAccent,
+              ),
+              onChanged: (newValue) {
+                setState(() {
+                  _value = newValue;
+                  notifystring = _value;
+                });
+              },
+            )
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class Deadline extends StatefulWidget {
+  @override
+  _DeadlineState createState() => _DeadlineState();
+}
+
+class _DeadlineState extends State<Deadline> {
+  TextEditingController controller = TextEditingController();
+
+  TextInputFormatter integerformat =
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+  String _value = deadlinestring;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Project must finish in $deadlineint $deadlinestring'),
+        Row(
+          children: [
+            Container(
+              width: 60,
+              height: 30,
+              child: TextField(
+                controller: controller,
+                inputFormatters: [integerformat],
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(5),
+                  fillColor: Colors.blue.shade100,
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (_) {
+                  setState(() {
+                    deadlineint = int.parse(controller.text);
+                  });
+                },
+              ),
+            ),
+            DropdownButton(
+              items: list,
+              value: _value,
+              icon: const Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              style: const TextStyle(color: Colors.deepPurple),
+              underline: Container(
+                height: 2,
+                color: Colors.deepPurpleAccent,
+              ),
+              onChanged: (newValue) {
+                setState(() {
+                  _value = newValue;
+                  deadlinestring = _value;
+                });
+              },
+            )
+          ],
+        )
+      ],
+    );
   }
 }
 
@@ -1230,6 +1522,7 @@ class _HaveMessageState extends State<HaveMessage> {
     ]);
   }
 }
+
 /*
 Takvim ekle
 Location Düzenle, class import et, virtual projects tickbox ekle,(consumer widget?)
